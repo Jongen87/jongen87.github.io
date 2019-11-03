@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Geert's Notes - Spark</title><link href="/" rel="alternate"></link><link href="/feeds/spark.atom.xml" rel="self"></link><id>/</id><updated>2019-12-05T19:30:00+01:00</updated><entry><title>Spark AI Summit 2019 Notes</title><link href="/spark-ai-summit-2019-notes.html" rel="alternate"></link><published>2019-10-24T12:00:00+02:00</published><updated>2019-12-05T19:30:00+01:00</updated><author><name>Geert Jongen</name></author><id>tag:None,2019-10-24:/spark-ai-summit-2019-notes.html</id><summary type="html">&lt;p&gt;Short version for index and feeds&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Spark AI Summit&lt;/h1&gt;
+&lt;p&gt;Last week i attended the Spark+AI summit in Amsterdam. This was the first time I went to this conference 
+and it showed my lots of new features and ideas that I am now quite excited about. In this post I would like to 
+share some interesting ideas and tools that I came across, and that I will definitely investigate further.&lt;/p&gt;
+&lt;h2&gt;MlFlow&lt;/h2&gt;
+&lt;p&gt;One of the most interesting tools was definitely MlFlow. This tool fills one of the big gaps that I see in 
+practice when building data science models. Usually you start with a model and then slowly start building more 
+features and hence better performance. However, quite quickly you get marginal increases in performance and 
+you start to think about the complexity/performance trade-off. At that point a tool like MlFLow is really 
+helpful in that automatically logs each run of your model, while also logging the git commit of the code. &lt;/p&gt;
+&lt;p&gt;In addition, it also saves the model in pickled format so that you can easily export it to a production environment when 
+you are ready. I have already played with this the last weekend and got some interesting results. What I have not solved 
+however, is how to store the data pipeline code and version together with the model code. 
+In order to take an even higher-level point of view I will start to investigate Kubeflow  and Hopsworks which were both mentioned in several talks.&lt;/p&gt;
+&lt;h3&gt;Other Topics&lt;/h3&gt;
+&lt;p&gt;In addition a lot of talks mentioned that data quality issues are by far the biggest issue bottlenecking data science performance. Interesting new tools &amp;amp; packages are:
+1.  Of course delta from databricks which provides an ACID data lake to Spark and big data. It sounds very exciting but I could not determine up to what extent all the features are open source or only included in the commercial version from Databricks. (https://delta.io/). As an alternative Iceberg was mentioned. Where Delta is more column based, Iceberg is the rowbased implementation. 
+2.   Apache kafka is used virtually every presentation showing how their IT infrastructure glues all components together
+3.  Debezium an interesting concept where you stream schema changes and updates using the logs of the source database to your feature engineering code. Auto-adjust based on schema changes for example.
+4.  Zipline, airbnb’s implementation for Feature engineering taking into account streams of data where it can be hard to know what each variable was at each point in time, and how to time travel back and forth.
+5.  Waimak, a framework to help you build spark pipelines faster &lt;/p&gt;</content><category term="spark"></category><category term="summit"></category><category term="notes"></category><category term="mlflow"></category></entry></feed>

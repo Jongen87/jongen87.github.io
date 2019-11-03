@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Geert's Notes - misc</title><link href="/" rel="alternate"></link><link href="/feeds/misc.atom.xml" rel="self"></link><id>/</id><updated>2019-10-28T00:00:00+01:00</updated><entry><title>DNS</title><link href="/dns.html" rel="alternate"></link><published>2019-10-28T00:00:00+01:00</published><updated>2019-10-28T00:00:00+01:00</updated><author><name>Geert Jongen</name></author><id>tag:None,2019-10-28:/dns.html</id><summary type="html">&lt;h2&gt;DNS&lt;/h2&gt;
+&lt;p&gt;This article is about DNS. Usually I do not have to worry about this but as you
+start running apps in the cloud you have to understand at least the basics.
+That is my goal with this page. How can you use DNS and what should you understand
+when …&lt;/p&gt;</summary><content type="html">&lt;h2&gt;DNS&lt;/h2&gt;
+&lt;p&gt;This article is about DNS. Usually I do not have to worry about this but as you
+start running apps in the cloud you have to understand at least the basics.
+That is my goal with this page. How can you use DNS and what should you understand
+when you quickly try to put apps in production using a cloud service provider.&lt;/p&gt;
+&lt;h2&gt;DNS&lt;/h2&gt;
+&lt;p&gt;In a nutshell, DNS uses socalled nameservers to find where the content is stored that you are looking for
+you usually start at top-level-domains. There are two types countrycode TLD (i.e., .nl), and gTLD (.com). Globally there are 13
+root servers hosted by IANA that contain addresses to DNS servers for these TLDs.&lt;/p&gt;
+&lt;p&gt;For example, the root server points to the country authoritative server for .nl 
+which is managed by (https://www.sidn.nl/)[SIDN]. Further (https://public-dns.info/nameserver/nl.html)[here] is a list with all public DNS servers in the Netherlands. 
+Most of these are unauthoriatitve and therefore cache information from authorative servers.
+This is also the reason that an update to your dns info might take 48hrs before it is
+fully propagated across all DNS nameservers.&lt;/p&gt;
+&lt;p&gt;Next as an organization you would get your domain by setting it up through a registrar.
+this organization has the delegated responsiblity within the country-specific domain to set up
+local zones. I might for example registrate datascience.nl. This then means that within
+datascience.nl i can create subdomains that i point to.&lt;/p&gt;
+&lt;h2&gt;DNS Record&lt;/h2&gt;
+&lt;p&gt;There are basically two types of DNS records. 
+1. An Arecord which maps a (sub)domain to an IP address www.datascience.nl &amp;gt; 192.168.1.1
+2. CNAME which maps a (sub)domain to another domain my.datascience.nl &amp;gt; www.datascience.nl
+Also seperately
+3. MXNET for email which maps to a mail server&lt;/p&gt;
+&lt;p&gt;When there is a CNAME, the DNS server will not return the domain, but visit this domain.
+This will continue until you hit an ARECORD that will return an IP. The chain of CNAMEs is not limited
+in any way.&lt;/p&gt;
+&lt;h2&gt;Dig&lt;/h2&gt;
+&lt;p&gt;dig is a linux tool for querying DNS servers. See &lt;a href="here"&gt;https://www.madboa.com/geek/dig/#understanding-the-default-output&lt;/a&gt; a
+detailed howto. It can help in understanding what a DNS server is doing.&lt;/p&gt;
+&lt;h3&gt;issues&lt;/h3&gt;
+&lt;p&gt;One issue i came accross was that if you map a CNAME to the root domain (datascience.nl) 
+it will assume there are no other records. Hence, any subdomains or mail will not be picked up. see more details
+&lt;a href="here"&gt;https://www.freecodecamp.org/news/why-cant-a-domain-s-root-be-a-cname-8cbab38e5f5c/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The problem arises as you want to point your naked domain to something like a load balancer from AWS.
+The ips of these ELBs are not static and might change. Hence, AWS requires you to use the URL. This can only
+be done through a CNAME. Any subdomains [Arecords] or mail [MXNET] records will be ignored.&lt;/p&gt;
+&lt;p&gt;To overcome this issue some DNS providers have provided something called CNAME flattening. Basically 
+it provides a CNAME implementation without any downsides. Unfortanetly this is not standard, so different
+DNS providers provide different implementations or none at all.&lt;/p&gt;
+&lt;p&gt;Solutions are
+&lt;code&gt;ALIAS&lt;/code&gt; at DNSimple
+&lt;code&gt;ANAME&lt;/code&gt; at DNS made easy
+&lt;code&gt;ANAME&lt;/code&gt; at easyDNS
+&lt;code&gt;CNAME&lt;/code&gt;(virtual) at Cloudflare&lt;/p&gt;</content></entry><entry><title>MlFlow Lessons Learned</title><link href="/mlflow-lessons-learned.html" rel="alternate"></link><published>2019-10-24T00:00:00+02:00</published><updated>2019-10-24T00:00:00+02:00</updated><author><name>Geert Jongen</name></author><id>tag:None,2019-10-24:/mlflow-lessons-learned.html</id><summary type="html">&lt;h1&gt;MlFlow&lt;/h1&gt;
+&lt;p&gt;As shown in the post about my Spark+AI summit notes, I got interested to 
+test out the performance of mlflow.&lt;/p&gt;
+&lt;h2&gt;Quickstart&lt;/h2&gt;
+&lt;p&gt;The quickstart on the mlflow website is very simple to follow and will set
+you up quickly. One thing i missed is that if you run in …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;MlFlow&lt;/h1&gt;
+&lt;p&gt;As shown in the post about my Spark+AI summit notes, I got interested to 
+test out the performance of mlflow.&lt;/p&gt;
+&lt;h2&gt;Quickstart&lt;/h2&gt;
+&lt;p&gt;The quickstart on the mlflow website is very simple to follow and will set
+you up quickly. One thing i missed is that if you run in local mode, the
+results will be written away inside a .mlflow folder in your projects code.
+Hence, there is no need to create a centralized place to store your runs. I guess
+this makes sense when developing on your local machine.&lt;/p&gt;
+&lt;h2&gt;Cloud Setup&lt;/h2&gt;
+&lt;p&gt;Install on AWS
+It is possible to install the mlflow application on AWS. The goal is to create a 
+central app that can be used during a workshop to compare various models from different
+teams. In this way we can basically duplicate the kaggle competition
+layout.
+1. People send in their runs from which we can see what the performance is on the 
+train data
+2. we register the model and run it ourselves on a hidden test dataset and put the
+scores on a website&lt;/p&gt;</content><category term="mlflow"></category><category term="aws"></category></entry></feed>
